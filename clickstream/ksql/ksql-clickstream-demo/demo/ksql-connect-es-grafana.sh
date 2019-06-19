@@ -44,7 +44,7 @@ curl -s -X "POST" "http://$CONNECT_HOST:8083/connectors/" \
     "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
     "key.ignore": "true",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "type.name": "type.name=kafkaconnect",
+    "type.name": "_doc",
     "topic.index.map": "'$TABLE_NAME':'$table_name'",
     "connection.url": "http://'$ELASTIC_HOST':9200",
     "transforms": "FilterNulls",
@@ -59,5 +59,5 @@ echo -e "\t\t-> Adding Grafana Source"
 curl -s -X "POST" "http://$GRAFANA_HOST:3000/api/datasources" \
 	    -H "Content-Type: application/json" \
 	     --user admin:admin \
-	     -d $'{"id":1,"orgId":1,"name":"'$table_name'","type":"elasticsearch","typeLogoUrl":"public/app/plugins/datasource/elasticsearch/img/elasticsearch.svg","access":"proxy","url":"http://'$ELASTIC_HOST':9200","password":"","user":"","database":"'$table_name'","basicAuth":false,"isDefault":false,"jsonData":{"timeField":"EVENT_TS"}}' \
+	     -d $'{"id":1,"orgId":1,"name":"'$table_name'","type":"elasticsearch","typeLogoUrl":"public/app/plugins/datasource/elasticsearch/img/elasticsearch.svg","access":"proxy","url":"http://'$ELASTIC_HOST':9200","password":"","user":"","database":"'$table_name'","basicAuth":false,"isDefault":false,"jsonData":{"esVersion":70, "timeField":"EVENT_TS"}}' \
        >>/tmp/log.txt 2>&1
